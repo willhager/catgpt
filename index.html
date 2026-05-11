@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CatGPT</title>
+        <link rel="stylesheet" href="style.css"> 
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Pangolin&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <div class="header">
+            <img class="logo" src="/catFace.png">
+            <div class="title">
+                <h1>CatGPT</h1>
+                <h3>Or: Statistically Modeling Feline Vocalization using Cosine Similarity of High Dimensional Vector Embeddings</h3>
+            </div>
+        </div>
+        <div class="column-container">
+            <div class="sidebar">
+                <div class="card-centered">
+                    <div class="sticky-note">
+                        <h3>About</h3>
+                    </div>
+                    <p>CatGPT is a highly advanced statistic model of feline vocalization. It uses modern ML techniques to predict what a cat might say in response to any input. If CatGPT isn't responding to your input, perhaps you should give some thought about when cats meow.</p>
+                    <p>The idea came to me in my sleep. No, I'm not joking. I genuinely woke up in the middle of the night and this was in my head. Special thanks to my friends at University for helping me iron out the details.</p>
+                </div>
+                <div class="card-centered">
+                    <p>Created by Will Hager: <a href="https://willhager.com" target="_blank" rel="noopener noreferrer">willhager.com</a></p>
+                </div>
+            </div>
+            <div class="page">
+                <div class="chat">
+                    <div class="card" id="status">Loading feline simulator model (25mb). Model only needs to load on first usage.</div>
+                    <div class="card" id="output">Cat output: </div>
+                    <br>
+                    <textarea id="input" placeholder="What might one say to a cat?"></textarea>
+                    <button class="card" id="btn" disabled>Loading model</button>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script type="module">
+        import { pipeline, cos_sim } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3/dist/transformers.min.js';
+         
+        const FOOD_ANCHORS = ["Food", "Treats", "Treat", "Catnip", "Do you want food?", "Want food?", "Do you want a treat?", "Want treats?", "Fish"];
+
+        const output = document.getElementById("output");
+        const input = document.getElementById("input");
+        const status = document.getElementById("status");
+        const btn = document.getElementById("btn");
+
+        let failCount = 0;
+
+        const embedder = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
+        status.textContent = "Model ready!";
+        btn.disabled = false;
+        btn.textContent = "Ask CatGPT"
+
+        status.textContent = "Pre-Computing Anchor Embeddings"
+        const anchor_embeddings = await Promise.all(
+            FOOD_ANCHORS.map(phrase => embed(phrase))
+        );
+        status.textContent = "Feline Simulation Model ready. Ask away!";
+
+        async function embed(text) {
+            const out = await embedder(text, { pooling: 'mean', normalize: true })
+            return Array.from(out.data)
+        };
+
+        async function cosineSimilarity(text1, text2) {
+            const out = cos_sim(text1, text2);
+            return out;
+        };
+
+        async function getFoodSimilarity(text) {
+            const inputEmbeddings = await embed(text);
+            const similarities = await Promise.all(anchor_embeddings.map(embedding => cosineSimilarity(embedding, inputEmbeddings)));
+            const out = Math.max(...similarities)
+            return out
+        };
+
+        async function getMeowMap(similarity) {
+            const threshold = 0.65
+            const maxMeows = 3
+            const power = 2
+            if(similarity < threshold) {
+                console.log("Similarity: " + similarity)
+                failCount += 1;
+                if (failCount > 3) {
+                    status.textContent="You're not having too much luck... What might a cat get excited about?"
+                }
+                return "..."
+            }
+            else {
+                console.log("Similarity: " + similarity)
+                similarity = (similarity - threshold) / (1 - threshold)
+                console.log("Normalized similarity: " + similarity)
+                similarity = similarity * maxMeows
+                console.log("pre-exponent similarity: " + similarity)
+                const meowNum = Math.ceil(Math.pow(power, similarity))
+                console.log("Number of out meows: " + meowNum)
+                if(failCount > 3) {
+                    status.textContent="Nice job! You're getting the hang of what cats care about."
+                }
+                return "meow ".repeat(meowNum)
+            }
+        }
+
+        btn.addEventListener("click", async () => {
+            let foodSim = await getFoodSimilarity(input.value);
+            let meows = await getMeowMap(foodSim);
+            output.textContent = "Cat output: " + meows;
+        }
+        );
+
+    </script>
+</html>

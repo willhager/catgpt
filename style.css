@@ -1,0 +1,138 @@
+body {
+    background-color: #e8ebe6;
+    margin: 0;
+    font-family: "Pangolin", cursive;
+}
+
+.column-container{
+    display: flex;
+    gap: 0;
+    height: 85vh;
+}
+
+.sidebar{
+    flex: 3;
+    border-right: 3px solid black;
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    padding: 0.5rem;
+
+}
+
+.header {
+    border-bottom: 3px solid black;
+    margin: 0;
+    padding-top: 0.1rem;
+    padding-left: 1rem;
+    padding-bottom: 0.3rem;
+    max-height: 20vh;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+}
+
+.logo {
+    max-width: 100px;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+.logo:hover {
+    transform: rotate(10deg); 
+}
+
+.page{
+    margin-left: 0rem;
+    margin-top: 0rem;
+    flex: 7;
+    align-content: center;
+}
+
+.chat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.card{
+    border: 3px solid #1a1a1a;
+    padding: 0.5rem 0.5rem;
+    position: relative;
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    box-shadow: 5px 5px 0 #1a1a1a;
+    transform: rotate(-0.6deg);
+    margin: 1rem;
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-centered {
+    border: 3px solid #1a1a1a;
+    padding: 0.5rem 0.5rem;
+    position: relative;
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    box-shadow: 5px 5px 0 #1a1a1a;
+    transform: rotate(-0.6deg);
+    margin: 1rem;
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.sticky-note {
+    display: inline-block;
+    padding: 0rem 0.8rem;
+    border: 2.5px solid #1a1a1a;
+    border-radius: 100px 8px 80px 8px / 8px 80px 8px 100px;
+    transform: rotate(-1deg);
+    background: #ffeb3b;
+    transition: transform 0.3s ease;
+}
+
+.sticky-note:hover {
+    transform: rotate(4deg);
+}
+#output {
+    text-align: center;
+    font-size: 1.5rem;
+    min-width: 25rem;
+    min-height: 2rem;
+}
+
+#status{
+    font-size: 2rem;
+}
+
+#btn {
+    font-family: inherit;
+    font-size: 1.5rem;
+}
+
+#btn:hover {
+    transform: rotate(1deg); 
+    background-color: #ddd;
+    box-shadow: 10px 10px 0 #1a1a1a;
+}
+
+#input {
+    display: block;
+    width: 60%;
+    height: 30%;
+    padding: 0.4rem 0.8rem;
+    background: #fff;
+
+    border: 3px solid #1a1a1a;
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    box-shadow: 3px 3px 0 #1a1a1a;
+
+    transform: rotate(-0.5deg);
+
+    font-size: 1.3rem;
+
+    outline: none;
+    transition: transform 0.3s ease;
+}
+
+#input:focus{
+    transform: scale(1.1);
+}
