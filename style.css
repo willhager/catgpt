@@ -1,5 +1,5 @@
 body {
-    background-color: #e8ebe6;
+    background-color: #fdf6e3;
     margin: 0;
     font-family: "Pangolin", cursive;
 }
@@ -92,7 +92,7 @@ body {
 .sticky-note:hover {
     transform: rotate(4deg);
 }
-#output {
+.output {
     text-align: center;
     font-size: 1.5rem;
     min-width: 25rem;
@@ -106,11 +106,12 @@ body {
 #btn {
     font-family: inherit;
     font-size: 1.5rem;
+    background-color: #fdf6e3;
 }
 
 #btn:hover {
     transform: rotate(1deg); 
-    background-color: #ddd;
+    background-color: #fdf6e3;
     box-shadow: 10px 10px 0 #1a1a1a;
 }
 
@@ -131,8 +132,90 @@ body {
 
     outline: none;
     transition: transform 0.3s ease;
+
+    font-family: "Pangolin", cursive;
+
 }
 
 #input:focus{
     transform: scale(1.1);
+}
+
+#chat-box {
+    width: 70%;
+    overflow-y: scroll;
+    max-height: 30vh;
+    min-height: 30vh;
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    border: 3px solid #1a1a1a;
+    scroll-behavior: smooth;
+}
+
+.chat-item {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.chat-bubble {
+    border: 3px solid #1a1a1a;
+    padding: 0.75rem 1rem;
+    position: relative;
+    box-shadow: 4px 4px 0 #1a1a1a;
+    max-width: 70%;
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chat-bubble--left {
+    border-radius: 15px 225px 255px 15px / 225px 15px 15px 255px;
+    transform: rotate(0.4deg);
+    margin: 1rem 1rem 1rem 2rem;
+    align-self: flex-start;
+}
+
+.chat-bubble--left::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: -22px;
+    width: 24px;
+    height: 20px;
+    border-left: 3px solid #1a1a1a;
+    border-bottom: 3px solid #1a1a1a;
+    border-bottom-left-radius: 80% 60%;
+    border-top: none;
+    border-right: none;
+    background: inherit;
+    box-shadow: -4px 4px 0 #1a1a1a;
+    transform: skewX(-8deg) rotate(-2deg);
+}
+
+.chat-bubble--right {
+    border-radius: 225px 15px 15px 255px / 15px 255px 225px 15px;
+    transform: rotate(-0.5deg);
+    margin: 1rem 2rem 1rem 1rem;
+    align-self: flex-end;
+}
+
+.chat-bubble--right::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    right: -22px;
+    width: 24px;
+    height: 20px;
+    border-right: 3px solid #1a1a1a;
+    border-bottom: 3px solid #1a1a1a;
+    border-bottom-right-radius: 80% 60%;
+    border-top: none;
+    border-left: none;
+    background: inherit;
+    box-shadow: 4px 4px 0 #1a1a1a;
+    transform: skewX(8deg) rotate(2deg);
+}
+
+@media (max-width: 768px) {
+    .sidebar, #subheading {
+        display: none;
+    }
 }

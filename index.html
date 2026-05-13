@@ -14,7 +14,7 @@
             <img class="logo" src="./catFace.png">
             <div class="title">
                 <h1>CatGPT</h1>
-                <h3>Or: Statistically Modeling Feline Vocalization using Cosine Similarity of High Dimensional Vector Embeddings</h3>
+                <h3 id="subheading">Or: Statistically Modeling Feline Vocalization using Cosine Similarity of High Dimensional Vector Embeddings</h3>
             </div>
         </div>
         <div class="column-container">
@@ -33,9 +33,11 @@
             <div class="page">
                 <div class="chat">
                     <div class="card" id="status">Loading feline simulator model (25mb). Model only needs to load on first usage.</div>
-                    <div class="card" id="output">Cat output: </div>
                     <br>
-                    <textarea id="input" placeholder="What might one say to a cat?"></textarea>
+                    <div id="chat-box">
+                    </div>
+                    <br>
+                    <input id="input" placeholder="What might one say to a cat?"></input>
                     <button class="card" id="btn" disabled>Loading model</button>
                 </div>
             </div>
@@ -47,7 +49,7 @@
          
         const FOOD_ANCHORS = ["Food", "Treats", "Treat", "Catnip", "Do you want food?", "Want food?", "Do you want a treat?", "Want treats?", "Fish"];
 
-        const output = document.getElementById("output");
+        const chatBox = document.getElementById("chat-box");
         const input = document.getElementById("input");
         const status = document.getElementById("status");
         const btn = document.getElementById("btn");
@@ -109,12 +111,41 @@
             }
         }
 
-        btn.addEventListener("click", async () => {
-            let foodSim = await getFoodSimilarity(input.value);
+        async function buttonClick() {
+            var userText = input.value;
+            if (input.value === "") {
+                return;
+            }
+            input.value = "";
+            let foodSim = await getFoodSimilarity(userText);
             let meows = await getMeowMap(foodSim);
-            output.textContent = "Cat output: " + meows;
+
+            var catOutput = document.createElement('div');
+            catOutput.setAttribute("class", "chat-bubble chat-bubble--left")
+            catOutput.appendChild(document.createTextNode(meows));
+
+            var userInput = document.createElement('div');
+            userInput.setAttribute("class", "chat-bubble chat-bubble--right")
+            userInput.appendChild(document.createTextNode(userText));
+
+            var chatItem = document.createElement('div');
+            chatItem.setAttribute("class", "chat-item")
+            chatItem.appendChild(userInput);
+            chatItem.appendChild(catOutput);
+
+            chatBox.appendChild(chatItem)
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
-        );
+
+        btn.addEventListener("click", async () => {
+            await buttonClick();
+        })
+
+        document.addEventListener("keypress", async (e) => {
+            if (e.key === "Enter") {
+                await buttonClick();
+            }
+        });
 
     </script>
 </html>
