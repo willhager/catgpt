@@ -48,7 +48,7 @@
     <script type="module">
         import { pipeline, cos_sim } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3/dist/transformers.min.js';
          
-        const FOOD_ANCHORS = ["Food", "Treats", "Treat", "Catnip", "Do you want food?", "Want food?", "Do you want a treat?", "Want treats?", "Fish"];
+        const FOOD_ANCHORS = ["Food", "Food?", "Treats", "Treat", "Catnip", "Do you want food?", "Want food?", "Do you want a treat?", "Want treats?", "Fish"];
 
         const chatBox = document.getElementById("chat-box");
         const input = document.getElementById("input");
@@ -86,7 +86,7 @@
         };
 
         async function getMeowMap(similarity) {
-            const threshold = 0.65
+            const threshold = 0.5
             const maxMeows = 3
             const power = 2
             if(similarity < threshold) {
